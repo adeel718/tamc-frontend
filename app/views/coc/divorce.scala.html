@@ -85,8 +85,13 @@
                 </div>
 	        	} else {
                   <h1 class="heading-xlarge">@Html(Messages("change.status.divorce.transferor.conditional1.h1"))</h1>
-                  <p style="margin-top:-15px">@Html(Messages("change.status.divorce.transferor.conditional1.para1"))</p>
-                  <p>@Html(Messages("change.status.divorce.transferor.conditional1.para2",TextGenerators.ukDateTransformer(cyEffectiveUntilDate)))</p>
+                  <p style="margin-top:-15px">@Html(Messages("change.status.divorce.transferor.conditional1.para1",TextGenerators.ukDateTransformer(Some(changeRelationshipForm.get.dateOfDivorce.get))))</p>
+                  <div class="notice add-spacing-small">
+                   <p class="bold-small"> <img class="icon icon-information" src="@routes.Assets.at("images/icon-information.png")"> @Html(Messages("change.status.divorce.transferor.conditional1.para2"))</p>
+                  </div>
+                  <ul class="list-bullet space-smaller">
+                    <li>@Html(Messages("change.status.divorce.transferor.conditional1.para3",TextGenerators.ukDateTransformer(cyEffectiveUntilDate)))</li>
+                    <li>@Html(Messages("change.status.divorce.transferor.conditional1.para4")))</li></ul></br>
 	        	  <input name="endReason" id="endReason-divorce_cy" type="hidden" value="@EndReasonCode.DIVORCE_CY"/>
 	        	}
            	} else {

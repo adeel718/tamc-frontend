@@ -54,9 +54,7 @@ import play.Logger
 import play.api.mvc.AnyContent
 import play.api.mvc.Request
 import play.api.mvc.Result
-import services.TimeService
-import services.TransferService
-import services.UpdateRelationshipService
+import services.{TimeService, TransferService, UpdateRelationshipService}
 import uk.gov.hmrc.play.config.RunMode
 import uk.gov.hmrc.play.frontend.controller.FrontendController
 import uk.gov.hmrc.play.http.HeaderCarrier
@@ -143,13 +141,25 @@ trait UpdateRelationshipController extends FrontendController with AuthorisedAct
                     _ => Redirect(controllers.routes.UpdateRelationshipController.confirmReject)
                   }
                 case (EndReasonCode.DIVORCE, _) => Future { Ok(views.html.coc.divorce_select_year(changeRelationshipForm.fill(formData))) }
-                case (EndReasonCode.EARNINGS, Some(Role.TRANSFEROR)) => Future { Ok(views.html.coc.change_in_earnings()) }
                 case (EndReasonCode.EARNINGS, _) => Future { Ok(views.html.coc.change_in_earnings_recipient()) }
-                case (EndReasonCode.BEREAVEMENT, Some(Role.TRANSFEROR)) => Future { Ok(views.html.coc.bereavement_transferor()) }
                 case (EndReasonCode.BEREAVEMENT, _) => Future { Ok(views.html.coc.bereavement_recipient()) }
                 case _ => Future { BadRequest(views.html.coc.reason_for_change(updateRelationshipForm.fill(formData))) }
               })
 
+  }
+
+  def changeOfIncome = TamcAuthPersonalDetailsAction {
+    implicit auth =>
+      implicit request =>
+        implicit details =>
+          Future { Ok(views.html.coc.change_in_earnings()) }
+  }
+
+  def bereavement = TamcAuthPersonalDetailsAction {
+    implicit auth =>
+      implicit request =>
+        implicit details =>
+          Future { Ok(views.html.coc.bereavement_transferor())}
   }
 
   def confirmYourEmailActionUpdate = TamcAuthPersonalDetailsAction {

@@ -24,6 +24,7 @@
 @import play.twirl.api.Html
 @import views.helpers.TextGenerators
 @import config.ApplicationConfig
+@import services.TimeService
 
 @templates.tamc_main(
     title = Messages("title.pattern", Messages("title.confirm-transferor")),
@@ -34,34 +35,62 @@
 		               controllers.routes.LanguageController.switchToWelshConfirmUpdate.toString())
 		} 
         
-<h1 id="confirm-page" class="heading-xlarge">@Html(Messages("title.confirm-transferor"))</h1>
-<h2 class="heading-medium">@Html(Messages("change.status.confirm-change"))</h2>
+<h1 id="confirm-page" class="heading-xlarge">@Html(Messages("confirm.transferor.heading"))</h1>
 <table>
-    <tr class="blue-overline-large">
-@data.fullName.map[Option[String]](_.fullName).flatten.map {name =>
+    <tr>
+       @data.fullName.map[Option[String]](_.fullName).flatten.map {name =>
         <td>@Html(Messages("change.status.confirm.field.your-name"))</td>
         <td id="transferor-name">@name</td>
         <td>&nbsp;</td>
       </tr>
     <tr>
-}.getOrElse("")
+     }.getOrElse("")
       <td>@Html(Messages("generic.email"))</th>
       <td id="email">@data.email</td>
       <td><a href="confirm-email" id="edit-email">@Html(Messages("generic.change"))</a></td>
     </tr>
-    <tr class="blue-underline-large">
+    <tr>
       <td>@Html(Messages("change.status.realtionship-end"))</td>
       <td id="end-reason">@Html(Messages(s"change.status.reason-${data.endRelationshipReason.endReason}"))</td>
       <td>&nbsp;</td>
     </tr>
+    @if(data.endRelationshipReason.endReason == "DIVORCE_CY" || data.endRelationshipReason.endReason == "DIVORCE_PY") {
+    <tr>
+        <td>@Html(Messages("change.status.divorce.h1"))</td>
+        <td id="divorce-date">@TextGenerators.ukDateTransformer(data.endRelationshipReason.dateOfDivorce)</td>
+        <td><a href="divorce-select-year" id="edit-divorce">@Html(Messages("generic.change"))</a></td>
+    </tr>
+    }
 </table>
-<div class="confirmation-notice">
-	<div class="icon-important"></div>
-	<strong>@Html(Messages(s"change.status.relevantDate-${data.endRelationshipReason.endReason}", TextGenerators.ukDateTransformer(relevantDate)))</strong>
+@if(data.endRelationshipReason.endReason == "CANCEL") {
+<div class="notice add-spacing-small">
+    <p class="bold-small"> <img class="icon icon-information" src="@routes.Assets.at("images/icon-information.png")"> @Html(Messages("pages.confirm.message"))</p>
 </div>
+<ul class="list-bullet space-smaller">
+    <li>@Html(Messages("pages.confirm.message1",TextGenerators.ukDateTransformer(relevantDate)))</li>
+    <li>@Html(Messages("pages.confirm.message2",TextGenerators.ukDateTransformer(Some(TimeService.getEffectiveDate(data.endRelationshipReason)))))</li></ul>
+}
+@if(data.endRelationshipReason.endReason == "DIVORCE_CY") {
+<div class="notice add-spacing-small">
+    <p class="bold-small"> <img class="icon icon-information" src="@routes.Assets.at("images/icon-information.png")"> @Html(Messages("pages.confirm.divorce.cy.message"))</p>
+</div>
+<ul class="list-bullet space-smaller">
+    <li>your Marriage Allowance will remain in place until 5 April 2017, the end of the current tax year</li>
+    <li>your Personal Allowance will go back to the previous amount from 6 April 2017, the start of the new tax year</li></ul>
+}
+@if(data.endRelationshipReason.endReason == "DIVORCE_PY"){
+<div class="notice add-spacing-small">
+    <p class="bold-small"> <img class="icon icon-information" src="@routes.Assets.at("images/icon-information.png")"> @Html(Messages("pages.confirm.divorce.py.message",TextGenerators.ukDateTransformer(relevantDate)))</p>
+</div>
+<ul class="list-bullet space-smaller">
+    <li>@Html(Messages("pages.confirm.divorce.py.message1"))</li>
+    <li>@Html(Messages("pages.confirm.divorce.py.message2",TextGenerators.ukDateTransformer(relevantDate)))</li></ul>
+}
+
+<br>
 <div class="form-group">
 <p>
-  <a href="@{controllers.routes.UpdateRelationshipController.confirmUpdateAction}" id="confirmRemoval" class="button" role="button">@Html(Messages("generic.confirm.button"))</a>
+  <a href="@{controllers.routes.UpdateRelationshipController.confirmUpdateAction}" id="confirmRemoval" class="button" role="button">@Html(Messages("confirm.cancellation.button"))</a>
 </p>
 </div>
 }

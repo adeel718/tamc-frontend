@@ -40,12 +40,12 @@
         <input name="historicActiveRecord" id="historicActiveRecord" type="hidden" value="@changeRelationshipForm.get.historicActiveRecord.get"/>
         <input name="endReason" id="endReason" type="hidden" value="@changeRelationshipForm.get.endReason.get"/>
         </div>
-
+        <p class="information">@Html(Messages("pages.form.field.dod"))</p>
 	    <div class="form-group client-validated">
 	        @templates.dateFields(
 	        changeRelationshipForm,
 	        "dateOfDivorce",
-	        Html(Messages("pages.form.field.dod")),
+	        Html(Messages("pages.form.field.dod.question")),
 	        None,
 	        '_hintText -> Messages("pages.form.field-helper.dod"),
 	        '_label -> Messages("collect_user_data.dod.error"),

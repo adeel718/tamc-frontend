@@ -30,6 +30,8 @@ GET    /finished                                   controllers.TransferControlle
 #Change of Circumstances
 GET    /history                                    controllers.UpdateRelationshipController.history
 POST   /make-changes                               controllers.UpdateRelationshipController.makeChange
+GET    /change-of-income                           controllers.UpdateRelationshipController.changeOfIncome
+GET    /bereavement                                controllers.UpdateRelationshipController.bereavement
 POST   /reason-for-change                          controllers.UpdateRelationshipController.updateRelationshipAction
 POST   /divorce                                    controllers.UpdateRelationshipController.divorceAction
 POST   /divorce-select-year                        controllers.UpdateRelationshipController.divorceSelectYear
