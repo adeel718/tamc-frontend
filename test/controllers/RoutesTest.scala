@@ -338,6 +338,23 @@ class RoutesTest extends UnitSpec with TestUtility {
       back.attr("href") shouldBe marriageAllowanceUrl("/confirm-your-email")
     }
 
+    "navigate to edit date of marriage from confirmation page" in new WithApplication(fakeApplication) {
+      val trrec = UserRecord(cid = Cids.cid1, timestamp = "2015", name = None)
+      val rcrec = UserRecord(cid = Cids.cid5, timestamp = "2015", name = None)
+      val rcdata = RegistrationFormInput("foo", "bar", Gender("F"), Nino(Ninos.ninoWithLOA1), dateOfMarriage = new LocalDate(2015, 1, 1))
+      val recrecord = RecipientRecord(record = rcrec, data = rcdata)
+      val selectedYears = Some(List(2014, 2015))
+      val trRecipientData = Some(CacheData(transferor = Some(trrec), recipient = Some(recrecord), notification = Some(NotificationRecord(EmailAddress("example@example.com"))), selectedYears = selectedYears, dateOfMarriage= Some(DateOfMarriageFormInput(new LocalDate(2015, 1, 1)))))
+
+      val testComponent = makeTestComponent("user_happy_path", transferorRecipientData = trRecipientData)
+      val controllerToTest = testComponent.controller
+      val request = testComponent.request
+      val result = controllerToTest.dateOfMarriage(request)
+
+      status(result) shouldBe OK
+      val document = Jsoup.parse(contentAsString(result))
+      document.getElementsByClass("heading-xlarge").text() shouldBe "Date of Marriage or civil partnership"
+    }
 
     "have signout link" in new WithApplication(fakeApplication) {
       val trrec = UserRecord(cid = Cids.cid1, timestamp = "2015", name = None)
