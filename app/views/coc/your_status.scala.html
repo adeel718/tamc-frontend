@@ -120,7 +120,7 @@
                         @if(activeRecord) {
                         <tr>
                             <td id="active">@TextGenerators.taxDateIntervalString(activeRelationship.get.participant1StartDate, isWelsh =LanguageUtils.isWelsh(lang))</td>
-                            <td colspan="2">@Html(Messages("change.status.active"))</td>
+                            <td id="active-reason" colspan="2">@Html(Messages("change.status.active"))</td>
                         </tr>
                         }
                         @if(historicRecord) {
