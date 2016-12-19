@@ -425,7 +425,7 @@ class RoutesTest extends UnitSpec with TestUtility {
 
       val surveyLink = document.getElementById("paragraph-6")
       surveyLink shouldNot be(null)
-      surveyLink.getElementById("survey-link").attr("href") shouldBe "https://www.gov.uk/done/marriage-allowance"
+      surveyLink.getElementById("survey-link").attr("href") shouldBe "https://www.tax.service.gov.uk/personal-account/signed-out?origin=TAMC"
     }
 
     "have signout link and check your marriage allowance and survey link for PTA journey" in new WithApplication(fakeApplication) {
@@ -452,7 +452,7 @@ class RoutesTest extends UnitSpec with TestUtility {
 
       val surveyLink = document.getElementById("paragraph-6")
       surveyLink shouldNot be(null)
-      surveyLink.getElementById("survey-link").attr("href") shouldBe "https://www.gov.uk/done/marriage-allowance"
+      surveyLink.getElementById("survey-link").attr("href") shouldBe "https://www.tax.service.gov.uk/personal-account/signed-out?origin=TAMC"
     }
 
     "redirect to transfer-allowance if relation is not locked" in new WithApplication(fakeApplication) {
