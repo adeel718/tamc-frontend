@@ -618,6 +618,31 @@ class MarriageAllowanceControllerTest extends UnitSpec with TestUtility with One
       controllerToTest.createRelationshipUrl shouldBe Some("foo/paye/" + Ninos.ninoHappyPath + "/create-multi-year-relationship/GDS")
     }
 
+    "accept application form if user has successfully submitted application (GDS journey) for current and 2015 year" in {
+      val trrec = UserRecord(cid = Cids.cid1, timestamp = "2015")
+      val rcrec = UserRecord(cid = Cids.cid2, timestamp = "2015")
+      val rcdata = RegistrationFormInput(name = "foo", lastName = "bar", gender = Gender("M"), nino = Nino(Ninos.ninoWithLOA1), dateOfMarriage = new LocalDate(2015, 1, 1))
+      val recrecord = RecipientRecord(record = rcrec, data = rcdata)
+      val trRecipientData = Some(CacheData(
+        transferor = Some(trrec),
+        recipient = Some(recrecord),
+        notification = Some(NotificationRecord(EmailAddress("example123@example.com"))),
+        selectedYears = Some(List(2017, 2015))))
+
+      val testComponent = makeTestComponent("user_happy_path", transferorRecipientData = trRecipientData)
+      val controllerToTest = testComponent.controller
+      val request = testComponent.request
+      val result = controllerToTest.confirmAction(request)
+
+      status(result) shouldBe SEE_OTHER
+      redirectLocation(result) shouldBe Some("/marriage-allowance-application/finished")
+
+      controllerToTest.cachingRetrievalCount shouldBe 1
+      controllerToTest.cachingLockCreateRelationship shouldBe 1
+      controllerToTest.cachingLockCreateValue shouldBe Some(true)
+      controllerToTest.createRelationshipUrl shouldBe Some("foo/paye/" + Ninos.ninoHappyPath + "/create-multi-year-relationship/GDS")
+    }
+
     "accept application form if user has successfully submitted application (PTA journey)" in {
       val trrec = UserRecord(cid = Cids.cid1, timestamp = "2015")
       val rcrec = UserRecord(cid = Cids.cid2, timestamp = "2015")

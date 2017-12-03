@@ -98,6 +98,8 @@ object TestConstants {
 
   val CREATE_SUCCESSFUL_RELATIONSHIP_REQUEST = "CreateRelationshipRequestHolder(CreateRelationshipRequest(" + Cids.cid1 + ",2015," + Cids.cid2 + ",2015,List(2015)),CreateRelationshipNotificationRequest(UNKNOWN,example123@example.com,false))"
 
+  val CREATE_SUCCESSFUL_MULTIYEAR_RELATIONSHIP_REQUEST = "CreateRelationshipRequestHolder(CreateRelationshipRequest(" + Cids.cid1 + ",2015," + Cids.cid2 + ",2015,List(2015, 2017)),CreateRelationshipNotificationRequest(UNKNOWN,example123@example.com,false))"
+
   val UPDATE_SUCCESSFUL_RELATIONSHIP_REQUEST = "UpdateRelationshipRequestHolder(UpdateRelationshipRequest(RecipientInformation(999700100,2015),TransferorInformation(),RelationshipInformation(,Cancelled by Transferor," + getDateInRequiredFormate + ")),UpdateRelationshipNotificationRequest(UNKNOWN,example@example.com,Recipient,false,false))"
 
   val REJECT_ACTIVE_REL_REQ = "UpdateRelationshipRequestHolder(UpdateRelationshipRequest(RecipientInformation(999700100,2015),TransferorInformation(),RelationshipInformation(123456,Rejected by Recipient,20110406)),UpdateRelationshipNotificationRequest(UNKNOWN,example@example.com,Recipient,false,false))"
@@ -136,6 +138,7 @@ object TestConstants {
 
   val dummyHttpPutResponseJsonMap = Map(
     CREATE_SUCCESSFUL_RELATIONSHIP_REQUEST -> Future.successful(new DummyHttpResponse("""{"status": {"status_code":"OK"}}""", 200)),
+    CREATE_SUCCESSFUL_MULTIYEAR_RELATIONSHIP_REQUEST -> Future.successful(new DummyHttpResponse("""{"status": {"status_code":"OK"}}""", 200)),
     UPDATE_SUCCESSFUL_RELATIONSHIP_REQUEST -> Future.successful(new DummyHttpResponse("""{"status": {"status_code":"OK"}}""", 200)),
     REJECT_ACTIVE_REL_REQ -> Future.successful(new DummyHttpResponse("""{"status": {"status_code":"OK"}}""", 200)),
     REJECT_HISTORIC_REL_REQ -> Future.successful(new DummyHttpResponse("""{"status": {"status_code":"OK"}}""", 200)),
